@@ -149,7 +149,7 @@ function UserDetail({ user }: { user: UserRow }) {
       gender: gender || null,
       body_fat_percent: bodyFat ? Number(bodyFat) : null,
       smm_kg: smm ? Number(smm) : null,
-      lab_values: labValues,
+      lab_values: labValues as never,
     };
     const { error } = await supabase
       .from("health_data")
