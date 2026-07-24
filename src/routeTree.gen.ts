@@ -23,7 +23,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
-import { Route as AuthenticatedHubRouteImport } from './routes/_authenticated/hub'
 import { Route as AuthenticatedHubIndexRouteImport } from './routes/_authenticated/hub.index'
 import { Route as AuthenticatedHubSavedRouteImport } from './routes/_authenticated/hub.saved'
 import { Route as AuthenticatedHubHealthRouteImport } from './routes/_authenticated/hub.health'
@@ -98,30 +97,25 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/callback',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthenticatedHubRoute = AuthenticatedHubRouteImport.update({
-  id: '/hub',
-  path: '/hub',
+const AuthenticatedHubIndexRoute = AuthenticatedHubIndexRouteImport.update({
+  id: '/hub/',
+  path: '/hub/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedHubIndexRoute = AuthenticatedHubIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedHubRoute,
-} as any)
 const AuthenticatedHubSavedRoute = AuthenticatedHubSavedRouteImport.update({
-  id: '/saved',
-  path: '/saved',
-  getParentRoute: () => AuthenticatedHubRoute,
+  id: '/hub/saved',
+  path: '/hub/saved',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHubHealthRoute = AuthenticatedHubHealthRouteImport.update({
-  id: '/health',
-  path: '/health',
-  getParentRoute: () => AuthenticatedHubRoute,
+  id: '/hub/health',
+  path: '/hub/health',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHubAdminRoute = AuthenticatedHubAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedHubRoute,
+  id: '/hub/admin',
+  path: '/hub/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -135,7 +129,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
-  '/hub': typeof AuthenticatedHubRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
@@ -176,7 +169,6 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
-  '/_authenticated/hub': typeof AuthenticatedHubRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
@@ -198,7 +190,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/topics'
     | '/verify-email'
-    | '/hub'
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
@@ -238,7 +229,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/topics'
     | '/verify-email'
-    | '/_authenticated/hub'
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
@@ -362,67 +352,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_authenticated/hub': {
-      id: '/_authenticated/hub'
-      path: '/hub'
-      fullPath: '/hub'
-      preLoaderRoute: typeof AuthenticatedHubRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/hub/': {
       id: '/_authenticated/hub/'
-      path: '/'
+      path: '/hub'
       fullPath: '/hub/'
       preLoaderRoute: typeof AuthenticatedHubIndexRouteImport
-      parentRoute: typeof AuthenticatedHubRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/hub/saved': {
       id: '/_authenticated/hub/saved'
-      path: '/saved'
+      path: '/hub/saved'
       fullPath: '/hub/saved'
       preLoaderRoute: typeof AuthenticatedHubSavedRouteImport
-      parentRoute: typeof AuthenticatedHubRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/hub/health': {
       id: '/_authenticated/hub/health'
-      path: '/health'
+      path: '/hub/health'
       fullPath: '/hub/health'
       preLoaderRoute: typeof AuthenticatedHubHealthRouteImport
-      parentRoute: typeof AuthenticatedHubRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/hub/admin': {
       id: '/_authenticated/hub/admin'
-      path: '/admin'
+      path: '/hub/admin'
       fullPath: '/hub/admin'
       preLoaderRoute: typeof AuthenticatedHubAdminRouteImport
-      parentRoute: typeof AuthenticatedHubRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedHubRouteChildren {
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedHubAdminRoute: typeof AuthenticatedHubAdminRoute
   AuthenticatedHubHealthRoute: typeof AuthenticatedHubHealthRoute
   AuthenticatedHubSavedRoute: typeof AuthenticatedHubSavedRoute
   AuthenticatedHubIndexRoute: typeof AuthenticatedHubIndexRoute
 }
 
-const AuthenticatedHubRouteChildren: AuthenticatedHubRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHubAdminRoute: AuthenticatedHubAdminRoute,
   AuthenticatedHubHealthRoute: AuthenticatedHubHealthRoute,
   AuthenticatedHubSavedRoute: AuthenticatedHubSavedRoute,
   AuthenticatedHubIndexRoute: AuthenticatedHubIndexRoute,
-}
-
-const AuthenticatedHubRouteWithChildren =
-  AuthenticatedHubRoute._addFileChildren(AuthenticatedHubRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedHubRoute: typeof AuthenticatedHubRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedHubRoute: AuthenticatedHubRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
