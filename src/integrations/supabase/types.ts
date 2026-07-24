@@ -14,16 +14,225 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      health_data: {
+        Row: {
+          age: number | null
+          body_fat_percent: number | null
+          created_at: string
+          gender: string | null
+          id: string
+          lab_values: Json
+          smm_kg: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          body_fat_percent?: number | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          lab_values?: Json
+          smm_kg?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          body_fat_percent?: number | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          lab_values?: Json
+          smm_kg?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      health_data_audit: {
+        Row: {
+          action: string
+          changed_at: string
+          changed_by: string | null
+          id: string
+          new_value: Json | null
+          previous_value: Json | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_value?: Json | null
+          previous_value?: Json | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          new_value?: Json | null
+          previous_value?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mailing_list: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      nutrition_index: {
+        Row: {
+          calories: number | null
+          carbs_g: number | null
+          category: string | null
+          created_at: string
+          description: string | null
+          fat_g: number | null
+          id: string
+          key_nutrients: string | null
+          name: string
+          notes: string | null
+          protein_g: number | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          calories?: number | null
+          carbs_g?: number | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          fat_g?: number | null
+          id?: string
+          key_nutrients?: string | null
+          name: string
+          notes?: string | null
+          protein_g?: number | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          calories?: number | null
+          carbs_g?: number | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          fat_g?: number | null
+          id?: string
+          key_nutrients?: string | null
+          name?: string
+          notes?: string | null
+          protein_g?: number | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      saved_readings: {
+        Row: {
+          created_at: string
+          id: string
+          topic_slug: string
+          topic_title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          topic_slug: string
+          topic_title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          topic_slug?: string
+          topic_title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +359,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
