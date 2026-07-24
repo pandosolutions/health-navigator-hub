@@ -9,19 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as TopicsRouteImport } from './routes/topics'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NutritionIndexRouteImport } from './routes/nutrition-index'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TopicsRoute = TopicsRouteImport.update({
   id: '/topics',
   path: '/topics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgramsRoute = ProgramsRouteImport.update({
@@ -44,6 +58,11 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
   path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -64,26 +83,39 @@ const ProgramsSlugRoute = ProgramsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProgramsRoute,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
+  '/verify-email': typeof VerifyEmailRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
+  '/verify-email': typeof VerifyEmailRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
 }
@@ -91,11 +123,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
+  '/verify-email': typeof VerifyEmailRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
 }
@@ -104,33 +140,45 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
     | '/disclaimer'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
+    | '/reset-password'
     | '/topics'
+    | '/verify-email'
+    | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/disclaimer'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
+    | '/reset-password'
     | '/topics'
+    | '/verify-email'
+    | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/auth'
     | '/disclaimer'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
+    | '/reset-password'
     | '/topics'
+    | '/verify-email'
+    | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
   fileRoutesById: FileRoutesById
@@ -138,20 +186,37 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
   NutritionIndexRoute: typeof NutritionIndexRoute
   PrivacyRoute: typeof PrivacyRoute
   ProgramsRoute: typeof ProgramsRouteWithChildren
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TopicsRoute: typeof TopicsRouteWithChildren
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/topics': {
       id: '/topics'
       path: '/topics'
       fullPath: '/topics'
       preLoaderRoute: typeof TopicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/programs': {
@@ -182,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -210,8 +282,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsSlugRouteImport
       parentRoute: typeof ProgramsRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
+
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ProgramsRouteChildren {
   ProgramsSlugRoute: typeof ProgramsSlugRoute
@@ -239,11 +328,14 @@ const TopicsRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
   NutritionIndexRoute: NutritionIndexRoute,
   PrivacyRoute: PrivacyRoute,
   ProgramsRoute: ProgramsRouteWithChildren,
+  ResetPasswordRoute: ResetPasswordRoute,
   TopicsRoute: TopicsRouteWithChildren,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
