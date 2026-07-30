@@ -14,7 +14,7 @@ export default defineTool({
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async ({ username, phone }, ctx) => {
     if (!ctx.isAuthenticated()) return unauthenticated();
-    const patch: Record<string, string> = {};
+    const patch: { username?: string; phone?: string } = {};
     if (typeof username === "string") patch.username = username;
     if (typeof phone === "string") patch.phone = phone;
     if (Object.keys(patch).length === 0)
