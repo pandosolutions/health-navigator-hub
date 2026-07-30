@@ -15,6 +15,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NutritionIndexRouteImport } from './routes/nutrition-index'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -23,10 +24,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AuthenticatedHubIndexRouteImport } from './routes/_authenticated/hub.index'
 import { Route as AuthenticatedHubSavedRouteImport } from './routes/_authenticated/hub.saved'
 import { Route as AuthenticatedHubHealthRouteImport } from './routes/_authenticated/hub.health'
 import { Route as AuthenticatedHubAdminRouteImport } from './routes/_authenticated/hub.admin'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -56,6 +60,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const NutritionIndexRoute = NutritionIndexRouteImport.update({
   id: '/nutrition-index',
   path: '/nutrition-index',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -97,6 +106,18 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/callback',
   getParentRoute: () => AuthRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedHubIndexRoute = AuthenticatedHubIndexRouteImport.update({
   id: '/hub/',
   path: '/hub/',
@@ -117,21 +138,31 @@ const AuthenticatedHubAdminRoute = AuthenticatedHubAdminRouteImport.update({
   path: '/hub/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
   '/hub/saved': typeof AuthenticatedHubSavedRoute
@@ -142,15 +173,19 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
   '/hub/saved': typeof AuthenticatedHubSavedRoute
@@ -163,15 +198,19 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/mcp': typeof McpRoute
   '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/hub/admin': typeof AuthenticatedHubAdminRoute
   '/_authenticated/hub/health': typeof AuthenticatedHubHealthRoute
   '/_authenticated/hub/saved': typeof AuthenticatedHubSavedRoute
@@ -184,15 +223,19 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/disclaimer'
+    | '/mcp'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
     | '/topics'
     | '/verify-email'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
     | '/hub/saved'
@@ -203,15 +246,19 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/disclaimer'
+    | '/mcp'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
     | '/topics'
     | '/verify-email'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
     | '/hub/saved'
@@ -223,15 +270,19 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/disclaimer'
+    | '/mcp'
     | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
     | '/topics'
     | '/verify-email'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/hub/admin'
     | '/_authenticated/hub/health'
     | '/_authenticated/hub/saved'
@@ -244,12 +295,16 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
+  McpRoute: typeof McpRoute
   NutritionIndexRoute: typeof NutritionIndexRoute
   PrivacyRoute: typeof PrivacyRoute
   ProgramsRoute: typeof ProgramsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   TopicsRoute: typeof TopicsRouteWithChildren
   VerifyEmailRoute: typeof VerifyEmailRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -294,6 +349,13 @@ declare module '@tanstack/react-router' {
       path: '/nutrition-index'
       fullPath: '/nutrition-index'
       preLoaderRoute: typeof NutritionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -352,6 +414,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/hub/': {
       id: '/_authenticated/hub/'
       path: '/hub'
@@ -379,6 +455,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hub/admin'
       preLoaderRoute: typeof AuthenticatedHubAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -439,12 +522,17 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
+  McpRoute: McpRoute,
   NutritionIndexRoute: NutritionIndexRoute,
   PrivacyRoute: PrivacyRoute,
   ProgramsRoute: ProgramsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   TopicsRoute: TopicsRouteWithChildren,
   VerifyEmailRoute: VerifyEmailRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
