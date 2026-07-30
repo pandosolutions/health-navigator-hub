@@ -10,6 +10,7 @@ type Mode = "login" | "signup" | "forgot";
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
     mode: (s.mode as Mode) ?? "login",
+    next: typeof s.next === "string" ? s.next : undefined,
   }),
   head: () => ({
     meta: [
@@ -31,15 +32,28 @@ const signupSchema = loginSchema.extend({
   username: z.string().trim().min(2).max(40),
 });
 
+/** Only same-origin relative paths are honored as post-login redirects. */
+function safeNext(next: string | undefined) {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : null;
+}
+
+function useNextTarget() {
+  const { next } = Route.useSearch();
+  return safeNext(next);
+}
+
 function AuthPage() {
   const { mode } = Route.useSearch();
+  const next = useNextTarget();
   const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/hub", replace: true });
+      if (!data.user) return;
+      if (next) window.location.replace(next);
+      else navigate({ to: "/hub", replace: true });
     });
-  }, [navigate]);
+  }, [navigate, next]);
 
   return (
     <div className="mx-auto grid min-h-[80vh] max-w-md place-items-center px-6 py-16">
@@ -96,6 +110,7 @@ function AuthPage() {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const next = useNextTarget();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -115,8 +130,10 @@ function LoginForm() {
       return;
     }
     toast.success("Signed in.");
-    navigate({ to: "/hub" });
+    if (next) window.location.assign(next);
+    else navigate({ to: "/hub" });
   }
+
 
   return (
     <form onSubmit={submit} className="space-y-5">
@@ -134,6 +151,7 @@ function LoginForm() {
 }
 
 function SignupForm() {
+  const next = useNextTarget();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -152,7 +170,7 @@ function SignupForm() {
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        emailRedirectTo: `${window.location.origin}/verify-email`,
+        emailRedirectTo: `${window.location.origin}/verify-email${next ? `?next=${encodeURIComponent(next)}` : ""}`,
         data: { username: parsed.data.username },
       },
     });
@@ -244,11 +262,15 @@ function ForgotForm() {
 }
 
 function GoogleButton() {
+  const next = useNextTarget();
   const [loading, setLoading] = useState(false);
   async function go() {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/auth/callback",
+      redirect_uri:
+        window.location.origin +
+        "/auth/callback" +
+        (next ? `?next=${encodeURIComponent(next)}` : ""),
     });
     if (result.error) {
       setLoading(false);

@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/auth/callback")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Signing you in…" },
@@ -14,6 +17,8 @@ export const Route = createFileRoute("/auth/callback")({
 
 function Callback() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const target = next && next.startsWith("/") && !next.startsWith("//") ? next : null;
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,7 +28,9 @@ function Callback() {
       for (let i = 0; i < 10; i++) {
         const { data } = await supabase.auth.getSession();
         if (data.session) {
-          if (!cancelled) navigate({ to: "/hub", replace: true });
+          if (cancelled) return;
+          if (target) window.location.replace(target);
+          else navigate({ to: "/hub", replace: true });
           return;
         }
         await new Promise((r) => setTimeout(r, 200));
@@ -33,7 +40,8 @@ function Callback() {
     return () => {
       cancelled = true;
     };
-  }, [navigate]);
+  }, [navigate, target]);
+
 
   return (
     <div className="mx-auto grid min-h-[60vh] max-w-md place-items-center px-6">

@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/verify-email")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Verify email — Personalized Nutrition" },
@@ -17,6 +20,8 @@ export const Route = createFileRoute("/verify-email")({
 
 function VerifyEmail() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const target = next && next.startsWith("/") && !next.startsWith("//") ? next : null;
   const [verified, setVerified] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -24,10 +29,14 @@ function VerifyEmail() {
       const { data } = await supabase.auth.getUser();
       setVerified(!!data.user?.email_confirmed_at);
       if (data.user?.email_confirmed_at) {
-        setTimeout(() => navigate({ to: "/hub", replace: true }), 1500);
+        setTimeout(() => {
+          if (target) window.location.replace(target);
+          else navigate({ to: "/hub", replace: true });
+        }, 1500);
       }
     })();
-  }, [navigate]);
+  }, [navigate, target]);
+
 
   return (
     <div className="mx-auto grid min-h-[70vh] max-w-lg place-items-center px-6 text-center">
