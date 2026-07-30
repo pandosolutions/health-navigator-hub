@@ -262,11 +262,15 @@ function ForgotForm() {
 }
 
 function GoogleButton() {
+  const next = useNextTarget();
   const [loading, setLoading] = useState(false);
   async function go() {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/auth/callback",
+      redirect_uri:
+        window.location.origin +
+        "/auth/callback" +
+        (next ? `?next=${encodeURIComponent(next)}` : ""),
     });
     if (result.error) {
       setLoading(false);
