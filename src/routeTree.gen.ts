@@ -31,6 +31,7 @@ import { Route as AuthenticatedHubSavedRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedHubHealthRouteImport } from './routes/_authenticated/hub.health'
 import { Route as AuthenticatedHubAdminRouteImport } from './routes/_authenticated/hub.admin'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -144,6 +145,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -210,6 +218,7 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/hub/admin': typeof AuthenticatedHubAdminRoute
   '/_authenticated/hub/health': typeof AuthenticatedHubHealthRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/programs/$slug'
     | '/topics/$slug'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/hub/admin'
     | '/_authenticated/hub/health'
@@ -304,6 +316,7 @@ export interface RootRouteChildren {
   VerifyEmailRoute: typeof VerifyEmailRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
@@ -463,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -532,6 +552,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
