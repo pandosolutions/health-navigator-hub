@@ -151,6 +151,7 @@ function LoginForm() {
 }
 
 function SignupForm() {
+  const next = useNextTarget();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
