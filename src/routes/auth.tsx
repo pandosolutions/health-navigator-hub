@@ -110,6 +110,7 @@ function AuthPage() {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const next = useNextTarget();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -129,8 +130,10 @@ function LoginForm() {
       return;
     }
     toast.success("Signed in.");
-    navigate({ to: "/hub" });
+    if (next) window.location.assign(next);
+    else navigate({ to: "/hub" });
   }
+
 
   return (
     <form onSubmit={submit} className="space-y-5">
