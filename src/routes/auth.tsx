@@ -32,15 +32,28 @@ const signupSchema = loginSchema.extend({
   username: z.string().trim().min(2).max(40),
 });
 
+/** Only same-origin relative paths are honored as post-login redirects. */
+function safeNext(next: string | undefined) {
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : null;
+}
+
+function useNextTarget() {
+  const { next } = Route.useSearch();
+  return safeNext(next);
+}
+
 function AuthPage() {
   const { mode } = Route.useSearch();
+  const next = useNextTarget();
   const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/hub", replace: true });
+      if (!data.user) return;
+      if (next) window.location.replace(next);
+      else navigate({ to: "/hub", replace: true });
     });
-  }, [navigate]);
+  }, [navigate, next]);
 
   return (
     <div className="mx-auto grid min-h-[80vh] max-w-md place-items-center px-6 py-16">
