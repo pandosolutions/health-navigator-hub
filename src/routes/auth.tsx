@@ -170,7 +170,7 @@ function SignupForm() {
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        emailRedirectTo: `${window.location.origin}/verify-email`,
+        emailRedirectTo: `${window.location.origin}/verify-email${next ? `?next=${encodeURIComponent(next)}` : ""}`,
         data: { username: parsed.data.username },
       },
     });
