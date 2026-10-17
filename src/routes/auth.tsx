@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 
 type Mode = "login" | "signup" | "forgot";
@@ -266,13 +265,17 @@ function GoogleButton() {
   const [loading, setLoading] = useState(false);
   async function go() {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri:
-        window.location.origin +
-        "/auth/callback" +
-        (next ? `?next=${encodeURIComponent(next)}` : ""),
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo:
+          window.location.origin +
+          "/auth/callback" +
+          (next ? `?next=${encodeURIComponent(next)}` : ""),
+      },
     });
-    if (result.error) {
+    // On success the browser is already on its way to Google.
+    if (error) {
       setLoading(false);
       toast.error("Google sign-in failed");
     }

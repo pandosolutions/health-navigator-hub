@@ -30,8 +30,8 @@ import { Route as DailyIntakeIndexRouteImport } from './routes/daily-intake.inde
 import { Route as DailyIntakeNutrientRouteImport } from './routes/daily-intake.$nutrient'
 import { Route as DiseasesIndexRouteImport } from './routes/diseases.index'
 import { Route as DiseasesSlugRouteImport } from './routes/diseases.$slug'
+import { Route as OauthConsentRouteImport } from './routes/oauth.consent'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as AuthenticatedHubIndexRouteImport } from './routes/_authenticated/hub.index'
 import { Route as AuthenticatedHubAdminRouteImport } from './routes/_authenticated/hub.admin'
@@ -144,15 +144,15 @@ const DiseasesSlugRoute = DiseasesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => DiseasesRoute,
 } as any)
+const OauthConsentRoute = OauthConsentRouteImport.update({
+  id: '/oauth/consent',
+  path: '/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TopicsSlugRoute = TopicsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => TopicsRoute,
-} as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
@@ -200,10 +200,10 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake/': typeof DailyIntakeIndexRoute
   '/diseases/': typeof DiseasesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -227,10 +227,10 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake': typeof DailyIntakeIndexRoute
   '/diseases': typeof DiseasesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -258,10 +258,10 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake/': typeof DailyIntakeIndexRoute
   '/diseases/': typeof DiseasesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/hub/admin': typeof AuthenticatedHubAdminRoute
   '/_authenticated/hub/health': typeof AuthenticatedHubHealthRoute
@@ -289,10 +289,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake/'
     | '/diseases/'
-    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -316,10 +316,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake'
     | '/diseases'
-    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -346,10 +346,10 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake/'
     | '/diseases/'
-    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/hub/admin'
     | '/_authenticated/hub/health'
@@ -374,7 +374,7 @@ export interface RootRouteChildren {
   VerifyEmailRoute: typeof VerifyEmailRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  OauthConsentRoute: typeof OauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
@@ -527,19 +527,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiseasesSlugRouteImport
       parentRoute: typeof DiseasesRoute
     }
+    '/oauth/consent': {
+      id: '/oauth/consent'
+      path: '/oauth/consent'
+      fullPath: '/oauth/consent'
+      preLoaderRoute: typeof OauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/topics/$slug': {
       id: '/topics/$slug'
       path: '/$slug'
       fullPath: '/topics/$slug'
       preLoaderRoute: typeof TopicsSlugRouteImport
       parentRoute: typeof TopicsRoute
-    }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
@@ -663,7 +663,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
-  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  OauthConsentRoute: OauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport

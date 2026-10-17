@@ -184,15 +184,13 @@ Stores submitted emails in Supabase for a mailing list
 
 Placement: footer, present on every page site-wide
 
-This project was built with [Lovable](https://lovable.dev).
+## Hosting & deployment
 
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/330e9ab0-55c2-4999-af41-85db6658df28).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- **Site:** Cloudflare Worker `moringa` serving moringatherapeutics.com and www (`wrangler.jsonc`).
+- **Database & sign-in:** Supabase project `moringa-prod` (`dvcjunywbslizbbyergg`). The public URL and publishable key are in `.env`.
+- **Private keys:** Cloudflare secrets, set with `npx wrangler secret put NAME`.
+- **Deploy:** `npm run deploy` (builds, then uploads with Wrangler).
+- **AI assistant (MCP) endpoint:** `/mcp`, built with the MIT-licensed `@lovable.dev/mcp-js` library; its OAuth consent page is `/oauth/consent`.
 
 ## Development
 
