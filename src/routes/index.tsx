@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import anatomyNetworkHero from "@/assets/anatomy-network-hero.png";
+import { AnatomyExplorer } from "@/components/anatomy/AnatomyExplorer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -65,12 +65,7 @@ function HeroSection() {
     <section className="relative mx-auto max-w-7xl px-6 pt-16 pb-24 lg:px-10 lg:pt-24 lg:pb-32">
       <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
         <div className="order-2 md:order-1">
-          <img
-            src={anatomyNetworkHero}
-            alt="Network-mapped illustration of a man and woman"
-            className="w-full max-w-[520px] mx-auto"
-            loading="eager"
-          />
+          <AnatomyExplorer />
         </div>
         <div className="order-1 md:order-2">
           <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
@@ -84,8 +79,8 @@ function HeroSection() {
             <span className="text-muted-foreground">for All.</span>
           </h1>
           <p className="mt-8 max-w-md text-base leading-relaxed text-muted-foreground">
-            One body. One biology. One protocol. Nutrition science translated
-            into programs designed around who you actually are.
+            One body. One biology. One protocol. Nutrition science translated into programs designed
+            around who you actually are.
           </p>
           <div className="mt-10 flex flex-wrap gap-6 text-[12px] uppercase tracking-[0.2em]">
             <a
@@ -125,9 +120,7 @@ function OfferingsSection() {
             const content = (
               <>
                 <div>
-                  <div className="text-3xl font-medium md:text-4xl">
-                    {o.name}
-                  </div>
+                  <div className="text-3xl font-medium md:text-4xl">{o.name}</div>
                   <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
                     {o.tag}
                   </div>
