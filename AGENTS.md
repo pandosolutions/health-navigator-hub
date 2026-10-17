@@ -1,10 +1,6 @@
-<!-- LOVABLE:BEGIN -->
 > [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+> Hosting: Cloudflare Worker "moringa" (wrangler.jsonc) serving moringatherapeutics.com.
+> Database/auth: Supabase project moringa-prod (dvcjunywbslizbbyergg, us-west-2) in its
+> own Supabase account. The site is no longer connected to Lovable. Database changes go
+> in supabase/migrations/; private keys are Cloudflare secrets, never in git.
+

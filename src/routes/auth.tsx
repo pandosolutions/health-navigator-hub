@@ -2,8 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
+import { GoogleSignInButton } from "@/components/site/GoogleSignInButton";
 
 type Mode = "login" | "signup" | "forgot";
 
@@ -261,31 +261,20 @@ function ForgotForm() {
   );
 }
 
+/** Google's own sign-in button, so Google's screen names moringatherapeutics.com. */
 function GoogleButton() {
   const next = useNextTarget();
-  const [loading, setLoading] = useState(false);
-  async function go() {
-    setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri:
-        window.location.origin +
-        "/auth/callback" +
-        (next ? `?next=${encodeURIComponent(next)}` : ""),
-    });
-    if (result.error) {
-      setLoading(false);
-      toast.error("Google sign-in failed");
-    }
-  }
+  const navigate = useNavigate();
   return (
-    <button
-      type="button"
-      onClick={go}
-      disabled={loading}
-      className="w-full rounded-sm border border-foreground py-3 text-[12px] font-medium uppercase tracking-[0.2em] [@media(hover:hover)]:hover:bg-foreground [@media(hover:hover)]:hover:text-background active:bg-foreground active:text-background transition-colors disabled:opacity-50"
-    >
-      {loading ? "…" : "Continue with Google"}
-    </button>
+    <GoogleSignInButton
+      clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+      theme="filled_black"
+      onSignedIn={() => {
+        if (next) window.location.assign(next);
+        else navigate({ to: "/hub" });
+      }}
+      onError={(message) => toast.error(`Google sign-in failed${message ? `: ${message}` : ""}`)}
+    />
   );
 }
 
