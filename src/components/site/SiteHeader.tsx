@@ -2,12 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import moringaLogo from "@/assets/moringa-logo.png";
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/topics", label: "Topics" },
-  { to: "/nutrition-index", label: "Nutrition Index" },
-  { to: "/programs", label: "Programs" },
+  { to: "/diseases", label: "Diseases" },
+  { to: "/daily-intake", label: "Daily Intake" },
+  { to: "/programs", label: "Ingredient Index" },
   { to: "/about", label: "About" },
 ] as const;
 
@@ -26,8 +27,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-[color:var(--color-hairline)] bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-        <Link to="/" className="text-sm font-medium tracking-[0.2em] uppercase">
-          Personalized Nutrition
+        <Link to="/" className="flex items-center">
+          <img src={moringaLogo} alt="Moringa" className="h-7 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">

@@ -73,8 +73,8 @@ export function SiteFooter() {
               </h4>
               <ul className="mt-5 space-y-3">
                 <li><Link to="/" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Home</Link></li>
-                <li><Link to="/topics" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Topics</Link></li>
-                <li><Link to="/nutrition-index" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Nutrition Index</Link></li>
+                <li><Link to="/diseases" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Diseases</Link></li>
+                <li><Link to="/daily-intake" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Daily Intake</Link></li>
                 <li><Link to="/programs" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Programs</Link></li>
                 <li><Link to="/about" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">About</Link></li>
               </ul>

@@ -9,73 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VerifyEmailRouteImport } from './routes/verify-email'
-import { Route as TopicsRouteImport } from './routes/topics'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as ProgramsRouteImport } from './routes/programs'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as NutritionIndexRouteImport } from './routes/nutrition-index'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as DisclaimerRouteImport } from './routes/disclaimer'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
-import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
-import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DailyIntakeRouteImport } from './routes/daily-intake'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as DiseasesRouteImport } from './routes/diseases'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TherapeuticsByDiseaseRouteImport } from './routes/therapeutics-by-disease'
+import { Route as TopicsRouteImport } from './routes/topics'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as AuthenticatedHubIndexRouteImport } from './routes/_authenticated/hub.index'
-import { Route as AuthenticatedHubSavedRouteImport } from './routes/_authenticated/hub.saved'
-import { Route as AuthenticatedHubHealthRouteImport } from './routes/_authenticated/hub.health'
-import { Route as AuthenticatedHubAdminRouteImport } from './routes/_authenticated/hub.admin'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as DailyIntakeIndexRouteImport } from './routes/daily-intake.index'
+import { Route as DailyIntakeNutrientRouteImport } from './routes/daily-intake.$nutrient'
+import { Route as DiseasesIndexRouteImport } from './routes/diseases.index'
+import { Route as DiseasesSlugRouteImport } from './routes/diseases.$slug'
+import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedHubIndexRouteImport } from './routes/_authenticated/hub.index'
+import { Route as AuthenticatedHubAdminRouteImport } from './routes/_authenticated/hub.admin'
+import { Route as AuthenticatedHubHealthRouteImport } from './routes/_authenticated/hub.health'
+import { Route as AuthenticatedHubSavedRouteImport } from './routes/_authenticated/hub.saved'
 
-const VerifyEmailRoute = VerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TopicsRoute = TopicsRouteImport.update({
-  id: '/topics',
-  path: '/topics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProgramsRoute = ProgramsRouteImport.update({
-  id: '/programs',
-  path: '/programs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NutritionIndexRoute = NutritionIndexRouteImport.update({
-  id: '/nutrition-index',
-  path: '/nutrition-index',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DisclaimerRoute = DisclaimerRouteImport.update({
-  id: '/disclaimer',
-  path: '/disclaimer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -83,61 +52,107 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DailyIntakeRoute = DailyIntakeRouteImport.update({
+  id: '/daily-intake',
+  path: '/daily-intake',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TopicsSlugRoute = TopicsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => TopicsRoute,
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ProgramsSlugRoute = ProgramsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ProgramsRoute,
+const DiseasesRoute = DiseasesRouteImport.update({
+  id: '/diseases',
+  path: '/diseases',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => AuthRoute,
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsRoute = ProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TherapeuticsByDiseaseRoute = TherapeuticsByDiseaseRouteImport.update({
+  id: '/therapeutics-by-disease',
+  path: '/therapeutics-by-disease',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopicsRoute = TopicsRouteImport.update({
+  id: '/topics',
+  path: '/topics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93ListToolsRoute =
   Char91DotmcpChar93ListToolsRouteImport.update({
     id: '/.mcp/list-tools',
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedHubIndexRoute = AuthenticatedHubIndexRouteImport.update({
-  id: '/hub/',
-  path: '/hub/',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
 } as any)
-const AuthenticatedHubSavedRoute = AuthenticatedHubSavedRouteImport.update({
-  id: '/hub/saved',
-  path: '/hub/saved',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const DailyIntakeIndexRoute = DailyIntakeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DailyIntakeRoute,
 } as any)
-const AuthenticatedHubHealthRoute = AuthenticatedHubHealthRouteImport.update({
-  id: '/hub/health',
-  path: '/hub/health',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const DailyIntakeNutrientRoute = DailyIntakeNutrientRouteImport.update({
+  id: '/$nutrient',
+  path: '/$nutrient',
+  getParentRoute: () => DailyIntakeRoute,
 } as any)
-const AuthenticatedHubAdminRoute = AuthenticatedHubAdminRouteImport.update({
-  id: '/hub/admin',
-  path: '/hub/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const DiseasesIndexRoute = DiseasesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DiseasesRoute,
+} as any)
+const DiseasesSlugRoute = DiseasesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => DiseasesRoute,
+} as any)
+const TopicsSlugRoute = TopicsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TopicsRoute,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
@@ -145,29 +160,49 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedHubIndexRoute = AuthenticatedHubIndexRouteImport.update({
+  id: '/hub/',
+  path: '/hub/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHubAdminRoute = AuthenticatedHubAdminRouteImport.update({
+  id: '/hub/admin',
+  path: '/hub/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHubHealthRoute = AuthenticatedHubHealthRouteImport.update({
+  id: '/hub/health',
+  path: '/hub/health',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHubSavedRoute = AuthenticatedHubSavedRouteImport.update({
+  id: '/hub/saved',
+  path: '/hub/saved',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
+  '/daily-intake': typeof DailyIntakeRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/diseases': typeof DiseasesRouteWithChildren
   '/mcp': typeof McpRoute
-  '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
-  '/programs': typeof ProgramsRouteWithChildren
+  '/programs': typeof ProgramsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/therapeutics-by-disease': typeof TherapeuticsByDiseaseRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/programs/$slug': typeof ProgramsSlugRoute
+  '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
+  '/diseases/$slug': typeof DiseasesSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/daily-intake/': typeof DailyIntakeIndexRoute
+  '/diseases/': typeof DiseasesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
@@ -181,17 +216,20 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/mcp': typeof McpRoute
-  '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
-  '/programs': typeof ProgramsRouteWithChildren
+  '/programs': typeof ProgramsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/therapeutics-by-disease': typeof TherapeuticsByDiseaseRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/programs/$slug': typeof ProgramsSlugRoute
+  '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
+  '/diseases/$slug': typeof DiseasesSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/daily-intake': typeof DailyIntakeIndexRoute
+  '/diseases': typeof DiseasesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
@@ -205,19 +243,24 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
+  '/daily-intake': typeof DailyIntakeRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/diseases': typeof DiseasesRouteWithChildren
   '/mcp': typeof McpRoute
-  '/nutrition-index': typeof NutritionIndexRoute
   '/privacy': typeof PrivacyRoute
-  '/programs': typeof ProgramsRouteWithChildren
+  '/programs': typeof ProgramsRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/therapeutics-by-disease': typeof TherapeuticsByDiseaseRoute
   '/topics': typeof TopicsRouteWithChildren
   '/verify-email': typeof VerifyEmailRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/callback': typeof AuthCallbackRoute
-  '/programs/$slug': typeof ProgramsSlugRoute
+  '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
+  '/diseases/$slug': typeof DiseasesSlugRoute
   '/topics/$slug': typeof TopicsSlugRoute
+  '/daily-intake/': typeof DailyIntakeIndexRoute
+  '/diseases/': typeof DiseasesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/hub/admin': typeof AuthenticatedHubAdminRoute
@@ -231,19 +274,24 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/daily-intake'
     | '/disclaimer'
+    | '/diseases'
     | '/mcp'
-    | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
+    | '/therapeutics-by-disease'
     | '/topics'
     | '/verify-email'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
-    | '/programs/$slug'
+    | '/daily-intake/$nutrient'
+    | '/diseases/$slug'
     | '/topics/$slug'
+    | '/daily-intake/'
+    | '/diseases/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
@@ -257,17 +305,20 @@ export interface FileRouteTypes {
     | '/auth'
     | '/disclaimer'
     | '/mcp'
-    | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
+    | '/therapeutics-by-disease'
     | '/topics'
     | '/verify-email'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
-    | '/programs/$slug'
+    | '/daily-intake/$nutrient'
+    | '/diseases/$slug'
     | '/topics/$slug'
+    | '/daily-intake'
+    | '/diseases'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
@@ -280,19 +331,24 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/auth'
+    | '/daily-intake'
     | '/disclaimer'
+    | '/diseases'
     | '/mcp'
-    | '/nutrition-index'
     | '/privacy'
     | '/programs'
     | '/reset-password'
+    | '/therapeutics-by-disease'
     | '/topics'
     | '/verify-email'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/callback'
-    | '/programs/$slug'
+    | '/daily-intake/$nutrient'
+    | '/diseases/$slug'
     | '/topics/$slug'
+    | '/daily-intake/'
+    | '/diseases/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/hub/admin'
@@ -306,12 +362,14 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRouteWithChildren
+  DailyIntakeRoute: typeof DailyIntakeRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
+  DiseasesRoute: typeof DiseasesRouteWithChildren
   McpRoute: typeof McpRoute
-  NutritionIndexRoute: typeof NutritionIndexRoute
   PrivacyRoute: typeof PrivacyRoute
-  ProgramsRoute: typeof ProgramsRouteWithChildren
+  ProgramsRoute: typeof ProgramsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TherapeuticsByDiseaseRoute: typeof TherapeuticsByDiseaseRoute
   TopicsRoute: typeof TopicsRouteWithChildren
   VerifyEmailRoute: typeof VerifyEmailRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
@@ -322,74 +380,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/verify-email': {
-      id: '/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof VerifyEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/topics': {
-      id: '/topics'
-      path: '/topics'
-      fullPath: '/topics'
-      preLoaderRoute: typeof TopicsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/programs': {
-      id: '/programs'
-      path: '/programs'
-      fullPath: '/programs'
-      preLoaderRoute: typeof ProgramsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nutrition-index': {
-      id: '/nutrition-index'
-      path: '/nutrition-index'
-      fullPath: '/nutrition-index'
-      preLoaderRoute: typeof NutritionIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/disclaimer': {
-      id: '/disclaimer'
-      path: '/disclaimer'
-      fullPath: '/disclaimer'
-      preLoaderRoute: typeof DisclaimerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -399,39 +394,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/topics/$slug': {
-      id: '/topics/$slug'
-      path: '/$slug'
-      fullPath: '/topics/$slug'
-      preLoaderRoute: typeof TopicsSlugRouteImport
-      parentRoute: typeof TopicsRoute
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/programs/$slug': {
-      id: '/programs/$slug'
-      path: '/$slug'
-      fullPath: '/programs/$slug'
-      preLoaderRoute: typeof ProgramsSlugRouteImport
-      parentRoute: typeof ProgramsRoute
+    '/daily-intake': {
+      id: '/daily-intake'
+      path: '/daily-intake'
+      fullPath: '/daily-intake'
+      preLoaderRoute: typeof DailyIntakeRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/callback'
-      fullPath: '/auth/callback'
-      preLoaderRoute: typeof AuthCallbackRouteImport
-      parentRoute: typeof AuthRoute
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+    '/diseases': {
+      id: '/diseases'
+      path: '/diseases'
+      fullPath: '/diseases'
+      preLoaderRoute: typeof DiseasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs': {
+      id: '/programs'
+      path: '/programs'
+      fullPath: '/programs'
+      preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/therapeutics-by-disease': {
+      id: '/therapeutics-by-disease'
+      path: '/therapeutics-by-disease'
+      fullPath: '/therapeutics-by-disease'
+      preLoaderRoute: typeof TherapeuticsByDiseaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topics': {
+      id: '/topics'
+      path: '/topics'
+      fullPath: '/topics'
+      preLoaderRoute: typeof TopicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/list-tools': {
@@ -441,25 +485,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/daily-intake/': {
+      id: '/daily-intake/'
+      path: '/'
+      fullPath: '/daily-intake/'
+      preLoaderRoute: typeof DailyIntakeIndexRouteImport
+      parentRoute: typeof DailyIntakeRoute
+    }
+    '/daily-intake/$nutrient': {
+      id: '/daily-intake/$nutrient'
+      path: '/$nutrient'
+      fullPath: '/daily-intake/$nutrient'
+      preLoaderRoute: typeof DailyIntakeNutrientRouteImport
+      parentRoute: typeof DailyIntakeRoute
+    }
+    '/diseases/': {
+      id: '/diseases/'
+      path: '/'
+      fullPath: '/diseases/'
+      preLoaderRoute: typeof DiseasesIndexRouteImport
+      parentRoute: typeof DiseasesRoute
+    }
+    '/diseases/$slug': {
+      id: '/diseases/$slug'
+      path: '/$slug'
+      fullPath: '/diseases/$slug'
+      preLoaderRoute: typeof DiseasesSlugRouteImport
+      parentRoute: typeof DiseasesRoute
+    }
+    '/topics/$slug': {
+      id: '/topics/$slug'
+      path: '/$slug'
+      fullPath: '/topics/$slug'
+      preLoaderRoute: typeof TopicsSlugRouteImport
+      parentRoute: typeof TopicsRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/hub/': {
       id: '/_authenticated/hub/'
       path: '/hub'
       fullPath: '/hub/'
       preLoaderRoute: typeof AuthenticatedHubIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/hub/saved': {
-      id: '/_authenticated/hub/saved'
-      path: '/hub/saved'
-      fullPath: '/hub/saved'
-      preLoaderRoute: typeof AuthenticatedHubSavedRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/hub/health': {
-      id: '/_authenticated/hub/health'
-      path: '/hub/health'
-      fullPath: '/hub/health'
-      preLoaderRoute: typeof AuthenticatedHubHealthRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/hub/admin': {
@@ -469,19 +562,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHubAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/hub/health': {
+      id: '/_authenticated/hub/health'
+      path: '/hub/health'
+      fullPath: '/hub/health'
+      preLoaderRoute: typeof AuthenticatedHubHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/hub/saved': {
+      id: '/_authenticated/hub/saved'
+      path: '/hub/saved'
+      fullPath: '/hub/saved'
+      preLoaderRoute: typeof AuthenticatedHubSavedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
@@ -513,16 +606,32 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-interface ProgramsRouteChildren {
-  ProgramsSlugRoute: typeof ProgramsSlugRoute
+interface DailyIntakeRouteChildren {
+  DailyIntakeNutrientRoute: typeof DailyIntakeNutrientRoute
+  DailyIntakeIndexRoute: typeof DailyIntakeIndexRoute
 }
 
-const ProgramsRouteChildren: ProgramsRouteChildren = {
-  ProgramsSlugRoute: ProgramsSlugRoute,
+const DailyIntakeRouteChildren: DailyIntakeRouteChildren = {
+  DailyIntakeNutrientRoute: DailyIntakeNutrientRoute,
+  DailyIntakeIndexRoute: DailyIntakeIndexRoute,
 }
 
-const ProgramsRouteWithChildren = ProgramsRoute._addFileChildren(
-  ProgramsRouteChildren,
+const DailyIntakeRouteWithChildren = DailyIntakeRoute._addFileChildren(
+  DailyIntakeRouteChildren,
+)
+
+interface DiseasesRouteChildren {
+  DiseasesSlugRoute: typeof DiseasesSlugRoute
+  DiseasesIndexRoute: typeof DiseasesIndexRoute
+}
+
+const DiseasesRouteChildren: DiseasesRouteChildren = {
+  DiseasesSlugRoute: DiseasesSlugRoute,
+  DiseasesIndexRoute: DiseasesIndexRoute,
+}
+
+const DiseasesRouteWithChildren = DiseasesRoute._addFileChildren(
+  DiseasesRouteChildren,
 )
 
 interface TopicsRouteChildren {
@@ -541,12 +650,14 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRouteWithChildren,
+  DailyIntakeRoute: DailyIntakeRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
+  DiseasesRoute: DiseasesRouteWithChildren,
   McpRoute: McpRoute,
-  NutritionIndexRoute: NutritionIndexRoute,
   PrivacyRoute: PrivacyRoute,
-  ProgramsRoute: ProgramsRouteWithChildren,
+  ProgramsRoute: ProgramsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  TherapeuticsByDiseaseRoute: TherapeuticsByDiseaseRoute,
   TopicsRoute: TopicsRouteWithChildren,
   VerifyEmailRoute: VerifyEmailRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
