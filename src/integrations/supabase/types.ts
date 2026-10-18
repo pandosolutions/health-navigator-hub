@@ -14,6 +14,49 @@ export type Database = {
   }
   public: {
     Tables: {
+      bps_profiles: {
+        Row: {
+          ancestry_code: number
+          birth_year: number
+          code: string
+          conditions: string[]
+          created_at: string
+          premium: Json
+          primary_code: number
+          secondary_code: number
+          sex: string
+          tertiary_code: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ancestry_code: number
+          birth_year: number
+          conditions?: string[]
+          created_at?: string
+          premium?: Json
+          primary_code: number
+          secondary_code: number
+          sex: string
+          tertiary_code: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ancestry_code?: number
+          birth_year?: number
+          conditions?: string[]
+          created_at?: string
+          premium?: Json
+          primary_code?: number
+          secondary_code?: number
+          sex?: string
+          tertiary_code?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       health_data: {
         Row: {
           age: number | null
@@ -226,6 +269,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      bps_ux: {
+        Args: { _code: string }
+        Returns: Json
+      }
       delete_my_account: {
         Args: Record<PropertyKey, never>
         Returns: undefined

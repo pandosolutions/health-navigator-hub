@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BpsProfileRouteImport } from './routes/bps-profile'
 import { Route as DailyIntakeRouteImport } from './routes/daily-intake'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as DiseasesRouteImport } from './routes/diseases'
@@ -55,6 +56,11 @@ const AboutRoute = AboutRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BpsProfileRoute = BpsProfileRouteImport.update({
+  id: '/bps-profile',
+  path: '/bps-profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DailyIntakeRoute = DailyIntakeRouteImport.update({
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
+  '/bps-profile': typeof BpsProfileRoute
   '/daily-intake': typeof DailyIntakeRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/diseases': typeof DiseasesRouteWithChildren
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
+  '/bps-profile': typeof BpsProfileRoute
   '/disclaimer': typeof DisclaimerRoute
   '/mcp': typeof McpRoute
   '/privacy': typeof PrivacyRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRouteWithChildren
+  '/bps-profile': typeof BpsProfileRoute
   '/daily-intake': typeof DailyIntakeRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/diseases': typeof DiseasesRouteWithChildren
@@ -274,6 +283,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/bps-profile'
     | '/daily-intake'
     | '/disclaimer'
     | '/diseases'
@@ -303,6 +313,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/bps-profile'
     | '/disclaimer'
     | '/mcp'
     | '/privacy'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/auth'
+    | '/bps-profile'
     | '/daily-intake'
     | '/disclaimer'
     | '/diseases'
@@ -362,6 +374,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRouteWithChildren
+  BpsProfileRoute: typeof BpsProfileRoute
   DailyIntakeRoute: typeof DailyIntakeRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
   DiseasesRoute: typeof DiseasesRouteWithChildren
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bps-profile': {
+      id: '/bps-profile'
+      path: '/bps-profile'
+      fullPath: '/bps-profile'
+      preLoaderRoute: typeof BpsProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/daily-intake': {
@@ -650,6 +670,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRouteWithChildren,
+  BpsProfileRoute: BpsProfileRoute,
   DailyIntakeRoute: DailyIntakeRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
   DiseasesRoute: DiseasesRouteWithChildren,
