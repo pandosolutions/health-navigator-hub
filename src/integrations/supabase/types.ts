@@ -150,6 +150,7 @@ export type Database = {
         Row: {
           created_at: string
           email: string | null
+          full_name: string | null
           id: string
           phone: string | null
           updated_at: string
@@ -158,6 +159,7 @@ export type Database = {
         Insert: {
           created_at?: string
           email?: string | null
+          full_name?: string | null
           id: string
           phone?: string | null
           updated_at?: string
@@ -166,6 +168,7 @@ export type Database = {
         Update: {
           created_at?: string
           email?: string | null
+          full_name?: string | null
           id?: string
           phone?: string | null
           updated_at?: string
@@ -223,6 +226,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      delete_my_account: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      my_account_has_password: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
