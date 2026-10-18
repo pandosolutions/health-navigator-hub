@@ -4,8 +4,10 @@ import {
   pointAt,
   rng,
   systemGeometry,
+  path,
   type Figure,
   type Keypoints,
+  type Line,
   type Path,
   type Pt,
   type Region,
@@ -199,24 +201,272 @@ function strokePath(ctx: CanvasRenderingContext2D, pts: Pt[]) {
   ctx.stroke();
 }
 
-type Geo = ReturnType<typeof systemGeometry> & { lungDots: Pt[][] };
+type Geo = ReturnType<typeof systemGeometry> & { airPaths: Path[] };
 
 function buildScene() {
   const figs = [buildFigure("male"), buildFigure("female")];
   const geos: Geo[] = figs.map((f, i) => {
     const r = rng(101 + i);
     const g = systemGeometry(f);
-    const lungDots = g.lungs.map(() => {
-      const out: Pt[] = [];
-      while (out.length < 22) {
-        const p = { x: r() * 2 - 1, y: r() * 2 - 1 };
-        if (p.x * p.x + p.y * p.y < 0.85) out.push(p);
-      }
-      return out;
-    });
-    return { ...g, lungDots };
+    // Air travels mouth → windpipe → a few routes down each airway tree.
+    const airPaths = g.trees.flatMap((tree) =>
+      Array.from({ length: 5 }, () => {
+        const route = tree.routes[Math.floor(r() * tree.routes.length)];
+        return path([...g.airIn.pts, ...route.slice(1)]);
+      }),
+    );
+    return { ...g, airPaths };
   });
   return { figs, geos };
+}
+
+/** Project a whole line, honouring each point's region. */
+function projectLine(P: Placed, pose: Pose, line: Line): Pt[] {
+  return line.pts.map((p, i) => project(P, pose, p.x, p.y, line.regions[i]));
+}
+
+function tracePath(ctx: CanvasRenderingContext2D, pts: Pt[], closed: boolean) {
+  ctx.beginPath();
+  pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+  if (closed) ctx.closePath();
+}
+
+// ---------------------------------------------------------------- heart
+
+type XY = [number, number];
+const VENTRICLES: XY[] = [
+  [-0.3, -0.25],
+  [-0.46, -0.02],
+  [-0.4, 0.25],
+  [-0.15, 0.45],
+  [0.12, 0.55],
+  [0.32, 0.57],
+  [0.42, 0.4],
+  [0.44, 0.12],
+  [0.36, -0.12],
+  [0.18, -0.26],
+  [-0.05, -0.3],
+];
+const LAD: XY[] = [
+  [-0.04, -0.24],
+  [0.04, 0.05],
+  [0.18, 0.36],
+  [0.3, 0.54],
+];
+const RCA: XY[] = [
+  [-0.28, -0.22],
+  [-0.42, 0.05],
+  [-0.32, 0.32],
+  [-0.12, 0.46],
+];
+const CIRC: XY[] = [
+  [0.12, -0.24],
+  [0.34, -0.06],
+  [0.42, 0.22],
+];
+
+/** Smooth curve through local points (quadratic through midpoints). */
+function curve(ctx: CanvasRenderingContext2D, pts: XY[], closed = false) {
+  ctx.beginPath();
+  const n = pts.length;
+  if (closed) {
+    const m0 = [(pts[n - 1][0] + pts[0][0]) / 2, (pts[n - 1][1] + pts[0][1]) / 2];
+    ctx.moveTo(m0[0], m0[1]);
+    for (let i = 0; i < n; i++) {
+      const p = pts[i];
+      const q = pts[(i + 1) % n];
+      ctx.quadraticCurveTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2);
+    }
+    ctx.closePath();
+  } else {
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < n - 1; i++) {
+      const p = pts[i];
+      const q = pts[i + 1];
+      ctx.quadraticCurveTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2);
+    }
+    ctx.lineTo(pts[n - 1][0], pts[n - 1][1]);
+  }
+}
+
+function pointOn(pts: XY[], f: number): XY {
+  const segs = pts.length - 1;
+  const s = Math.min(segs - 1, Math.floor(f * segs));
+  const u = f * segs - s;
+  return [pts[s][0] + (pts[s + 1][0] - pts[s][0]) * u, pts[s][1] + (pts[s + 1][1] - pts[s][1]) * u];
+}
+
+/**
+ * An anatomical heart in local units (1 = heart height, x toward the body's
+ * left): ventricles with the apex down and out, the right atrium, left
+ * auricle, aortic arch and its branches, pulmonary trunk, venae cavae and the
+ * coronary arteries with blood moving along them.
+ */
+function drawHeart(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  unit: number,
+  beat: number,
+  t: number,
+  a: number,
+) {
+  const k = unit * (1 + 0.075 * beat);
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(-0.12);
+  ctx.scale(k, k);
+  const px = 1 / k;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  const tube = (pts: XY[], width: number, c: RGB, alpha: number) => {
+    ctx.strokeStyle = rgba(c, alpha * a);
+    ctx.lineWidth = width;
+    curve(ctx, pts);
+    ctx.stroke();
+    ctx.strokeStyle = rgba(WHITE, 0.28 * alpha * a);
+    ctx.lineWidth = Math.max(px, width * 0.18);
+    curve(
+      ctx,
+      pts.map(([px0, py0]) => [px0 - width * 0.22, py0] as XY),
+    );
+    ctx.stroke();
+  };
+  const blue = [112, 138, 214] as const;
+  const purple = [138, 112, 240] as const;
+  const red = [214, 38, 62] as const;
+
+  // Veins and arteries behind the heart.
+  tube(
+    [
+      [-0.37, -0.2],
+      [-0.38, -0.55],
+      [-0.36, -0.88],
+    ],
+    0.12,
+    blue,
+    0.65,
+  ); // superior vena cava
+  tube(
+    [
+      [-0.39, 0.16],
+      [-0.42, 0.44],
+    ],
+    0.1,
+    blue,
+    0.5,
+  ); // inferior vena cava
+  tube(
+    [
+      [0.0, -0.66],
+      [-0.05, -0.97],
+    ],
+    0.07,
+    red,
+    0.85,
+  ); // brachiocephalic
+  tube(
+    [
+      [0.13, -0.73],
+      [0.13, -1.0],
+    ],
+    0.06,
+    red,
+    0.85,
+  ); // left carotid
+  tube(
+    [
+      [0.25, -0.69],
+      [0.32, -0.95],
+    ],
+    0.06,
+    red,
+    0.85,
+  ); // left subclavian
+  tube(
+    [
+      [-0.04, -0.22],
+      [-0.07, -0.5],
+      [0.03, -0.71],
+      [0.22, -0.73],
+      [0.35, -0.57],
+      [0.37, -0.3],
+      [0.38, 0.02],
+    ],
+    0.17,
+    red,
+    0.92,
+  ); // aorta
+  tube(
+    [
+      [0.09, -0.18],
+      [0.14, -0.4],
+      [0.2, -0.5],
+    ],
+    0.15,
+    purple,
+    0.9,
+  ); // pulmonary trunk
+  tube(
+    [
+      [0.18, -0.46],
+      [0.48, -0.45],
+    ],
+    0.09,
+    purple,
+    0.85,
+  );
+  tube(
+    [
+      [0.13, -0.44],
+      [-0.16, -0.47],
+    ],
+    0.09,
+    purple,
+    0.75,
+  );
+
+  // Right atrium and left auricle.
+  const atrium = ctx.createRadialGradient(-0.42, -0.16, 0.02, -0.38, -0.1, 0.24);
+  atrium.addColorStop(0, rgba([255, 140, 150], 0.9 * a));
+  atrium.addColorStop(1, rgba([150, 20, 40], 0.85 * a));
+  ctx.fillStyle = atrium;
+  ctx.beginPath();
+  ctx.ellipse(-0.38, -0.1, 0.17, 0.22, 0.15, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = rgba([190, 40, 60], 0.9 * a);
+  ctx.beginPath();
+  ctx.ellipse(0.39, -0.2, 0.11, 0.065, -0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Ventricles with soft shading and a highlight.
+  const body = ctx.createRadialGradient(-0.12, -0.08, 0.04, 0.02, 0.1, 0.72);
+  body.addColorStop(0, rgba([255, 130, 140], 0.95 * a));
+  body.addColorStop(0.55, rgba([205, 32, 55], 0.92 * a));
+  body.addColorStop(1, rgba([110, 8, 28], 0.9 * a));
+  ctx.fillStyle = body;
+  curve(ctx, VENTRICLES, true);
+  ctx.fill();
+  ctx.strokeStyle = rgba([255, 190, 195], 0.55 * a);
+  ctx.lineWidth = 1.2 * px;
+  ctx.stroke();
+  ctx.fillStyle = rgba(WHITE, 0.13 * a);
+  ctx.beginPath();
+  ctx.ellipse(-0.16, -0.08, 0.13, 0.07, -0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Coronary arteries, with blood pulses along them.
+  for (const route of [LAD, RCA, CIRC]) {
+    ctx.strokeStyle = rgba([255, 205, 175], 0.75 * a);
+    ctx.lineWidth = 1.3 * px;
+    curve(ctx, route);
+    ctx.stroke();
+    for (let i = 0; i < 2; i++) {
+      const [qx, qy] = pointOn(route, (t * 0.7 + i / 2) % 1);
+      drawGlow(ctx, [255, 220, 200], qx, qy, 9 * px, 0.9 * a);
+    }
+  }
+  ctx.restore();
 }
 let sceneCache: ReturnType<typeof buildScene> | null = null;
 const scene = () => (sceneCache ??= buildScene());
@@ -327,20 +577,54 @@ export function AnatomyExplorer() {
         const at = (p: Pt) => project(P, pose, p.x, p.y, regionFor(p, fig.kp));
         const pts = fig.nodes.map((n) => project(P, pose, n.x, n.y, n.region));
 
-        // Baseline constellation.
-        ctx.strokeStyle = rgba(WHITE, 0.13 * base);
-        ctx.lineWidth = 0.6;
+        // Baseline: triangulated mesh, then the silhouette and anatomy lines.
+        ctx.strokeStyle = rgba(WHITE, 0.15 * base);
+        ctx.lineWidth = 0.55;
         ctx.beginPath();
         for (const [a, b] of fig.edges) {
           ctx.moveTo(pts[a].x, pts[a].y);
           ctx.lineTo(pts[b].x, pts[b].y);
         }
         ctx.stroke();
+        const outline = projectLine(P, pose, fig.outline);
+        const bun = fig.bun ? projectLine(P, pose, fig.bun) : null;
+        ctx.lineJoin = "round";
+        for (const [width, alpha] of [
+          [4.5 * px, 0.07],
+          [1.15, 0.78],
+        ] as const) {
+          ctx.strokeStyle = rgba(WHITE, alpha * base);
+          ctx.lineWidth = width;
+          tracePath(ctx, outline, true);
+          ctx.stroke();
+          if (bun) {
+            tracePath(ctx, bun, true);
+            ctx.stroke();
+          }
+        }
+        ctx.strokeStyle = rgba(WHITE, 0.42 * base);
+        ctx.lineWidth = 0.8;
+        for (const f of fig.features) {
+          tracePath(ctx, projectLine(P, pose, f), false);
+          ctx.stroke();
+        }
+        // Nodes, batched into a few brightness bands (one fill per band)
+        // so hundreds of twinkling points stay cheap to draw.
+        const BANDS = 5;
+        const bands: Path2D[] = Array.from({ length: BANDS }, () => new Path2D());
         fig.nodes.forEach((n, i) => {
           const tw = reduce ? 0.7 : 0.5 + 0.5 * Math.sin(t * n.speed + n.phase);
-          const r = n.size * (0.85 + 0.45 * tw) * px * 1.6;
-          dot(ctx, WHITE, pts[i].x, pts[i].y, r, (0.3 + 0.7 * tw) * base);
-          if (n.star) drawGlow(ctx, WHITE, pts[i].x, pts[i].y, r * 9, 0.35 * tw * base);
+          const r = n.size * (0.85 + 0.35 * tw) * px * 1.5;
+          const level = n.hub ? 1 : 0.3 + 0.7 * tw;
+          const band = bands[Math.min(BANDS - 1, Math.floor(level * BANDS))];
+          band.moveTo(pts[i].x + r, pts[i].y);
+          band.arc(pts[i].x, pts[i].y, r, 0, Math.PI * 2);
+          if (n.hub) drawGlow(ctx, WHITE, pts[i].x, pts[i].y, r * 7, (0.35 + 0.3 * tw) * base);
+          else if (n.star) drawGlow(ctx, WHITE, pts[i].x, pts[i].y, r * 9, 0.35 * tw * base);
+        });
+        bands.forEach((band, b) => {
+          ctx.fillStyle = rgba(WHITE, ((b + 0.5) / BANDS) * base);
+          ctx.fill(band);
         });
         for (const s of sparkles) {
           if (s.fig !== fi || s.brain) continue;
@@ -407,76 +691,110 @@ export function AnatomyExplorer() {
             }
           });
           const hp = at(geo.heart);
-          const s = P.h * 0.0019 * (1 + 0.18 * beat);
-          drawGlow(ctx, c, hp.x, hp.y, P.h * (0.12 + 0.07 * beat), (0.5 + 0.45 * beat) * ac);
-          ctx.save();
-          ctx.translate(hp.x, hp.y);
-          ctx.scale(s, s);
-          ctx.beginPath();
-          for (let i = 0; i <= 60; i++) {
-            const a = (i / 60) * Math.PI * 2;
-            const x = 16 * Math.sin(a) ** 3;
-            const y = -(
-              13 * Math.cos(a) -
-              5 * Math.cos(2 * a) -
-              2 * Math.cos(3 * a) -
-              Math.cos(4 * a)
-            );
-            if (i) ctx.lineTo(x, y);
-            else ctx.moveTo(x, y);
-          }
-          ctx.closePath();
-          const g = ctx.createRadialGradient(-4, -4, 1, 0, 0, 18);
-          g.addColorStop(0, rgba([255, 190, 195], 0.85 * ac));
-          g.addColorStop(1, rgba(c, 0.45 * ac));
-          ctx.fillStyle = g;
-          ctx.fill();
-          ctx.lineWidth = 1 / s;
-          ctx.strokeStyle = rgba(WHITE, 0.6 * ac);
-          ctx.stroke();
-          ctx.restore();
+          drawGlow(ctx, c, hp.x, hp.y, P.h * (0.15 + 0.06 * beat), (0.35 + 0.35 * beat) * ac);
+          drawHeart(ctx, hp.x, hp.y, geo.heart.h * P.h, beat, t, ac);
         }
 
         // ------------------------------------------------ Respiratory
         const ar = amp.resp;
         if (ar > 0.01) {
           const c = SYSTEMS[2].rgb;
-          const inflate = 1 + 0.09 * pose.breath;
           const inhaling = Math.cos((2 * Math.PI * t) / BREATH_SECONDS) > 0;
-          ctx.strokeStyle = rgba(c, 0.5 * ar);
-          ctx.lineWidth = 1;
-          for (const p of [geo.airway, ...geo.bronchi]) strokePath(ctx, p.pts.map(at));
-          geo.lungs.forEach((L, li) => {
-            const centre = at({ x: L.cx, y: L.cy });
-            const rx = L.rx * P.h * inflate;
-            const ry = L.ry * P.h * inflate;
+          const carinaY = geo.trachea.pts[geo.trachea.pts.length - 1].y;
+          // Lungs swell with the breath, a little more in height than width.
+          const breathe = (p: Pt): Pt => {
+            if (p.y <= carinaY) return p;
+            const L = geo.lungs[p.x < 0 ? 0 : 1];
+            return {
+              x: L.cx + (p.x - L.cx) * (1 + 0.045 * pose.breath),
+              y: L.cy + (p.y - L.cy) * (1 + 0.07 * pose.breath),
+            };
+          };
+          const lat = (p: Pt) => at(breathe(p));
+          const pink = [244, 168, 182] as const;
+
+          // Windpipe with cartilage rings.
+          const tr = geo.trachea.pts.map(at);
+          ctx.lineCap = "round";
+          ctx.strokeStyle = rgba(pink, 0.35 * ar);
+          ctx.lineWidth = 0.014 * P.h;
+          tracePath(ctx, tr, false);
+          ctx.stroke();
+          ctx.strokeStyle = rgba([255, 225, 230], 0.7 * ar);
+          ctx.lineWidth = 0.9;
+          const [ta, tb] = [tr[0], tr[tr.length - 1]];
+          for (let i = 0; i <= 8; i++) {
+            const yy = ta.y + ((tb.y - ta.y) * i) / 8;
+            const xx = ta.x + ((tb.x - ta.x) * i) / 8;
             ctx.beginPath();
-            ctx.ellipse(centre.x, centre.y, rx, ry, 0, 0, Math.PI * 2);
-            ctx.fillStyle = rgba(c, 0.1 * ar);
-            ctx.fill();
-            ctx.strokeStyle = rgba(c, 0.55 * ar);
+            ctx.moveTo(xx - 0.0068 * P.h, yy);
+            ctx.lineTo(xx + 0.0068 * P.h, yy);
             ctx.stroke();
-            geo.lungDots[li].forEach((d, di) => {
-              const tw = 0.5 + 0.5 * Math.sin(t * 2 + di);
+          }
+
+          geo.lungs.forEach((L, li) => {
+            const shape = L.outline.map(lat);
+            const top = Math.min(...shape.map((p) => p.y));
+            const bottom = Math.max(...shape.map((p) => p.y));
+            const g = ctx.createLinearGradient(0, top, 0, bottom);
+            g.addColorStop(0, rgba([250, 190, 200], 0.3 * ar));
+            g.addColorStop(1, rgba([215, 105, 130], 0.32 * ar));
+            ctx.fillStyle = g;
+            tracePath(ctx, shape, true);
+            ctx.fill();
+            ctx.strokeStyle = rgba([255, 205, 215], 0.8 * ar);
+            ctx.lineWidth = 1.1;
+            ctx.stroke();
+            ctx.strokeStyle = rgba([255, 200, 210], 0.45 * ar);
+            ctx.lineWidth = 0.8;
+            for (const fis of L.fissures) {
+              tracePath(ctx, fis.map(lat), false);
+              ctx.stroke();
+            }
+            // Airway tree: thick bronchi down to fine bronchioles.
+            const tree = geo.trees[li];
+            for (const b of tree.branches) {
+              const A = lat(b.a);
+              const B = lat(b.b);
+              ctx.strokeStyle = rgba([235, 245, 255], (0.85 - b.depth * 0.1) * ar);
+              ctx.lineWidth = Math.max(0.5, (2.8 - b.depth * 0.45) * px * 1.6);
+              ctx.beginPath();
+              ctx.moveTo(A.x, A.y);
+              ctx.lineTo(B.x, B.y);
+              ctx.stroke();
+            }
+            // Air sacs through the tissue and at the airway tips, twinkling as they fill.
+            tree.sacs.forEach((sac, k) => {
+              const q = lat(sac);
+              const tw = 0.5 + 0.5 * Math.sin(t * 1.7 + k * 2.1);
               dot(
                 ctx,
-                c,
-                centre.x + d.x * rx,
-                centre.y + d.y * ry,
-                (0.9 + tw * 0.8) * px,
-                (0.4 + 0.5 * tw) * ar,
+                [255, 215, 222],
+                q.x,
+                q.y,
+                (0.7 + 0.5 * tw) * px * 1.3,
+                (0.25 + 0.45 * tw) * ar,
               );
             });
-            drawGlow(ctx, c, centre.x, centre.y, rx * 3, 0.25 * ar * (0.8 + 0.2 * pose.breath));
+            tree.leaves.forEach((leaf, k) => {
+              const q = lat(leaf);
+              const tw = 0.5 + 0.5 * Math.sin(t * 2.4 + k * 1.3);
+              const fill = 0.6 + 0.4 * pose.breath;
+              drawGlow(ctx, pink, q.x, q.y, (5 + 3 * tw) * px * fill, 0.55 * ar);
+              dot(ctx, WHITE, q.x, q.y, 1.1 * px, (0.5 + 0.5 * tw) * ar);
+            });
           });
-          for (const [pi, p] of [geo.airway, ...geo.bronchi].entries()) {
-            for (let k = 0; k < 4; k++) {
-              let f = (t * 0.45 + k / 4 + pi * 0.2) % 1;
+
+          // Air moving in on the inhale and out on the exhale.
+          geo.airPaths.forEach((p, pi) => {
+            for (let k = 0; k < 2; k++) {
+              let f = (t * 0.32 + k / 2 + pi * 0.09) % 1;
               if (!inhaling) f = 1 - f;
-              const q = at(pointAt(p, f));
-              drawGlow(ctx, c, q.x, q.y, 8 * px, 0.8 * ar);
+              const q = lat(pointAt(p, f));
+              drawGlow(ctx, c, q.x, q.y, 9 * px, 0.85 * ar);
+              dot(ctx, WHITE, q.x, q.y, 1.1 * px, 0.9 * ar);
             }
-          }
+          });
         }
 
         // ------------------------------------------------ Digestive
