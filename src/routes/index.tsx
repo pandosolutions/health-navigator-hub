@@ -79,8 +79,7 @@ function HeroSection() {
             <span className="text-muted-foreground">for All.</span>
           </h1>
           <p className="mt-8 max-w-md text-base leading-relaxed text-muted-foreground">
-            One body. One biology. One protocol. Nutrition science translated into programs designed
-            around who you actually are.
+            Nutrition science translated into programs designed around you.
           </p>
           <div className="mt-10 flex flex-wrap gap-6 text-[12px] uppercase tracking-[0.2em]">
             <a
