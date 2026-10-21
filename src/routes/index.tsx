@@ -42,12 +42,13 @@ const OFFERINGS = [
     slug: "ingredient-index",
     name: "Ingredient Index",
     tag: "Nutrition facts for your favorite ingredients",
-    href: "/programs",
+    href: "/nutrition/ingredient-index",
   },
   {
     slug: "recipes",
     name: "Recipes",
     tag: "Healthy & Therapeutic Recipes",
+    href: "/nutrition/recipes",
   },
 ] as const;
 

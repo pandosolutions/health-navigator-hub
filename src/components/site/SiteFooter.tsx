@@ -75,7 +75,7 @@ export function SiteFooter() {
                 <li><Link to="/" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Home</Link></li>
                 <li><Link to="/diseases" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Diseases</Link></li>
                 <li><Link to="/daily-intake" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Daily Intake</Link></li>
-                <li><Link to="/programs" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Programs</Link></li>
+                <li><Link to="/nutrition" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">Nutrition</Link></li>
                 <li><Link to="/about" className="text-muted-foreground active:text-foreground [@media(hover:hover)]:hover:text-foreground">About</Link></li>
               </ul>
             </div>

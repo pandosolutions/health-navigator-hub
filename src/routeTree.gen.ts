@@ -31,6 +31,10 @@ import { Route as DailyIntakeIndexRouteImport } from './routes/daily-intake.inde
 import { Route as DailyIntakeNutrientRouteImport } from './routes/daily-intake.$nutrient'
 import { Route as DiseasesIndexRouteImport } from './routes/diseases.index'
 import { Route as DiseasesSlugRouteImport } from './routes/diseases.$slug'
+import { Route as NutritionIndexRouteImport } from './routes/nutrition.index'
+import { Route as NutritionGeneralKnowledgeRouteImport } from './routes/nutrition.general-knowledge'
+import { Route as NutritionIngredientIndexRouteImport } from './routes/nutrition.ingredient-index'
+import { Route as NutritionRecipesRouteImport } from './routes/nutrition.recipes'
 import { Route as OauthConsentRouteImport } from './routes/oauth.consent'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
@@ -150,6 +154,28 @@ const DiseasesSlugRoute = DiseasesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => DiseasesRoute,
 } as any)
+const NutritionIndexRoute = NutritionIndexRouteImport.update({
+  id: '/nutrition/',
+  path: '/nutrition/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NutritionGeneralKnowledgeRoute =
+  NutritionGeneralKnowledgeRouteImport.update({
+    id: '/nutrition/general-knowledge',
+    path: '/nutrition/general-knowledge',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const NutritionIngredientIndexRoute =
+  NutritionIngredientIndexRouteImport.update({
+    id: '/nutrition/ingredient-index',
+    path: '/nutrition/ingredient-index',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const NutritionRecipesRoute = NutritionRecipesRouteImport.update({
+  id: '/nutrition/recipes',
+  path: '/nutrition/recipes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OauthConsentRoute = OauthConsentRouteImport.update({
   id: '/oauth/consent',
   path: '/oauth/consent',
@@ -207,10 +233,14 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/nutrition/general-knowledge': typeof NutritionGeneralKnowledgeRoute
+  '/nutrition/ingredient-index': typeof NutritionIngredientIndexRoute
+  '/nutrition/recipes': typeof NutritionRecipesRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake/': typeof DailyIntakeIndexRoute
   '/diseases/': typeof DiseasesIndexRoute
+  '/nutrition/': typeof NutritionIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -235,10 +265,14 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/nutrition/general-knowledge': typeof NutritionGeneralKnowledgeRoute
+  '/nutrition/ingredient-index': typeof NutritionIngredientIndexRoute
+  '/nutrition/recipes': typeof NutritionRecipesRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake': typeof DailyIntakeIndexRoute
   '/diseases': typeof DiseasesIndexRoute
+  '/nutrition': typeof NutritionIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/hub/admin': typeof AuthenticatedHubAdminRoute
   '/hub/health': typeof AuthenticatedHubHealthRoute
@@ -267,10 +301,14 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/daily-intake/$nutrient': typeof DailyIntakeNutrientRoute
   '/diseases/$slug': typeof DiseasesSlugRoute
+  '/nutrition/general-knowledge': typeof NutritionGeneralKnowledgeRoute
+  '/nutrition/ingredient-index': typeof NutritionIngredientIndexRoute
+  '/nutrition/recipes': typeof NutritionRecipesRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/daily-intake/': typeof DailyIntakeIndexRoute
   '/diseases/': typeof DiseasesIndexRoute
+  '/nutrition/': typeof NutritionIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/hub/admin': typeof AuthenticatedHubAdminRoute
   '/_authenticated/hub/health': typeof AuthenticatedHubHealthRoute
@@ -299,10 +337,14 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/nutrition/general-knowledge'
+    | '/nutrition/ingredient-index'
+    | '/nutrition/recipes'
     | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake/'
     | '/diseases/'
+    | '/nutrition/'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -327,10 +369,14 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/nutrition/general-knowledge'
+    | '/nutrition/ingredient-index'
+    | '/nutrition/recipes'
     | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake'
     | '/diseases'
+    | '/nutrition'
     | '/.mcp/invoke-tool/$tool'
     | '/hub/admin'
     | '/hub/health'
@@ -358,10 +404,14 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/daily-intake/$nutrient'
     | '/diseases/$slug'
+    | '/nutrition/general-knowledge'
+    | '/nutrition/ingredient-index'
+    | '/nutrition/recipes'
     | '/oauth/consent'
     | '/topics/$slug'
     | '/daily-intake/'
     | '/diseases/'
+    | '/nutrition/'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/hub/admin'
     | '/_authenticated/hub/health'
@@ -387,7 +437,11 @@ export interface RootRouteChildren {
   VerifyEmailRoute: typeof VerifyEmailRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  NutritionGeneralKnowledgeRoute: typeof NutritionGeneralKnowledgeRoute
+  NutritionIngredientIndexRoute: typeof NutritionIngredientIndexRoute
+  NutritionRecipesRoute: typeof NutritionRecipesRoute
   OauthConsentRoute: typeof OauthConsentRoute
+  NutritionIndexRoute: typeof NutritionIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
@@ -547,6 +601,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiseasesSlugRouteImport
       parentRoute: typeof DiseasesRoute
     }
+    '/nutrition/': {
+      id: '/nutrition/'
+      path: '/nutrition'
+      fullPath: '/nutrition/'
+      preLoaderRoute: typeof NutritionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nutrition/general-knowledge': {
+      id: '/nutrition/general-knowledge'
+      path: '/nutrition/general-knowledge'
+      fullPath: '/nutrition/general-knowledge'
+      preLoaderRoute: typeof NutritionGeneralKnowledgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nutrition/ingredient-index': {
+      id: '/nutrition/ingredient-index'
+      path: '/nutrition/ingredient-index'
+      fullPath: '/nutrition/ingredient-index'
+      preLoaderRoute: typeof NutritionIngredientIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nutrition/recipes': {
+      id: '/nutrition/recipes'
+      path: '/nutrition/recipes'
+      fullPath: '/nutrition/recipes'
+      preLoaderRoute: typeof NutritionRecipesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oauth/consent': {
       id: '/oauth/consent'
       path: '/oauth/consent'
@@ -684,7 +766,11 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  NutritionGeneralKnowledgeRoute: NutritionGeneralKnowledgeRoute,
+  NutritionIngredientIndexRoute: NutritionIngredientIndexRoute,
+  NutritionRecipesRoute: NutritionRecipesRoute,
   OauthConsentRoute: OauthConsentRoute,
+  NutritionIndexRoute: NutritionIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
