@@ -1,0 +1,42 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+
+const systems = [
+  {id:"neuro",name:"Nervous",color:"#96dcff",organs:[["Brain","Coordinates cognition, movement, and autonomic regulation.",48,16],["Spinal cord","Transmits signals between brain and body.",48,43]],nutrition:["Adequate vitamin B12 supports nerve function.","Omega-3 fatty acids are components of neural membranes."],diseases:["Stroke","Alzheimer disease","Peripheral neuropathy"],plants:[["Curcuma longa","Curcuminoids: investigated for neuroinflammatory pathways; clinical benefit remains uncertain."],["Camellia sinensis","Tea polyphenols: studied for cognitive and vascular outcomes; evidence is mixed."]]},
+  {id:"cardio",name:"Cardiovascular",color:"#ff4d5e",organs:[["Heart","Pumps blood through pulmonary and systemic circulation.",52,38],["Blood vessels","Distribute oxygen, nutrients, and signaling molecules.",50,61]],nutrition:["Limit excess sodium when managing blood pressure.","Favor fiber-rich foods and unsaturated fats."],diseases:["Coronary artery disease","Hypertension","Heart failure"],plants:[["Allium sativum","Garlic: modest blood-pressure effects reported in some trials; interactions possible."],["Hibiscus sabdariffa","Hibiscus: studied for blood-pressure reduction; evidence varies."]]},
+  {id:"resp",name:"Respiratory",color:"#8fd3ff",organs:[["Lungs","Exchange oxygen and carbon dioxide.",49,37],["Trachea","Conducts air into the bronchial tree.",49,26]],nutrition:["Adequate protein supports respiratory muscle maintenance.","Avoid assuming supplements replace inhaled or other prescribed therapy."],diseases:["Asthma","COPD","Pneumonia"],plants:[["Zingiber officinale","Ginger: studied for inflammatory pathways; not established as respiratory treatment."],["Thymus vulgaris","Thyme: traditionally used for cough; limited disease-specific clinical evidence."]]},
+  {id:"digest",name:"Digestive",color:"#ffb35c",organs:[["Liver","Processes nutrients and produces bile.",40,47],["Stomach","Begins protein digestion and regulates gastric emptying.",56,49],["Intestines","Absorb nutrients and water.",50,63],["Pancreas","Secretes digestive enzymes and metabolic hormones.",54,53]],nutrition:["Fiber supports bowel regularity and cardiometabolic health.","Adequate fluid intake helps maintain normal bowel function."],diseases:["GERD","Inflammatory bowel disease","Fatty liver disease"],plants:[["Mentha × piperita","Enteric-coated peppermint oil: evidence for some IBS symptoms; may worsen reflux."],["Zingiber officinale","Ginger: evidence for some forms of nausea; not a universal digestive therapy."]]},
+  {id:"musc",name:"Musculoskeletal",color:"#ff7a90",organs:[["Skeletal muscles","Generate movement and contribute to glucose disposal.",35,48],["Bones","Provide structure and mineral storage.",54,57],["Joints","Enable controlled movement between bones.",62,65]],nutrition:["Adequate protein supports muscle maintenance.","Calcium and vitamin D contribute to bone health."],diseases:["Osteoporosis","Osteoarthritis","Sarcopenia"],plants:[["Curcuma longa","Turmeric extracts: some evidence for osteoarthritis pain, with formulation differences."],["Boswellia serrata","Boswellia extracts: preliminary trials for joint symptoms; evidence quality varies."]]},
+  {id:"endo",name:"Endocrine",color:"#c59bff",organs:[["Thyroid","Produces hormones regulating metabolism.",49,28],["Pancreas","Releases insulin and glucagon.",52,52],["Adrenal glands","Produce stress and electrolyte-regulating hormones.",39,48]],nutrition:["Iodine is required for thyroid hormone synthesis; excess can also be harmful.","Fiber-rich dietary patterns support glycemic management."],diseases:["Type 2 diabetes","Hypothyroidism","Polycystic ovary syndrome"],plants:[["Trigonella foenum-graecum","Fenugreek: investigated for glucose control; evidence is heterogeneous."],["Cinnamomum verum","Cinnamon: studied for glycemic markers; benefits are inconsistent."]]}
+] as const;
+export const Route = createFileRoute("/systems/$system")({component:SystemPage});
+function SystemPage(){
+ const {system}=Route.useParams();
+ const s=systems.find(x=>x.id===system);
+ const [selected,setSelected]=useState<number|null>(null);
+ const [hover,setHover]=useState<number|null>(null);
+ if(!s)return <main className="mx-auto max-w-5xl px-6 py-20"><h1>System not found</h1><Link to="/">Return home</Link></main>;
+ const focus=hover??selected;
+ return <main className="mx-auto max-w-6xl px-6 py-16 lg:px-10">
+ <Link to="/" className="text-xs uppercase tracking-widest text-muted-foreground">← Back to anatomy explorer</Link>
+ <p className="mt-12 text-xs uppercase tracking-[.3em]" style={{color:s.color}}>Anatomical systems / {s.id}</p>
+ <h1 className="mt-3 text-5xl font-semibold">{s.name} system</h1>
+ <p className="mt-5 max-w-2xl text-muted-foreground">Explore major structures and their nutritional and clinical context. Select an organ to keep its description visible.</p>
+ <section className="mt-12 grid gap-8 lg:grid-cols-[1fr_1fr]">
+ <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl border border-white/15 bg-white/[.025]" onMouseLeave={()=>setHover(null)}>
+ <svg viewBox="0 0 100 125" className="absolute inset-0 h-full w-full" role="img" aria-label={s.name+" system organ map"}>
+ <circle cx="50" cy="14" r="10" fill="none" stroke="#ffffff55" strokeWidth=".6"/>
+ <path d="M40 25 Q27 26 23 40 L18 75 M60 25 Q73 26 77 40 L82 75 M40 25 L37 75 L41 110 M60 25 L63 75 L59 110 M37 75 Q50 81 63 75" fill="none" stroke="#ffffff55" strokeWidth=".8"/>
+ {s.organs.map((o,i)=><g key={o[0]} onMouseEnter={()=>setHover(i)} onClick={()=>setSelected(i)} className="cursor-pointer" role="button" tabIndex={0} aria-label={o[0]}><circle cx={o[2]} cy={o[3]} r={focus===i?7:5} fill={s.color} fillOpacity={focus===i?.8:.25} stroke={s.color} strokeWidth=".6"/><text x={o[2]} y={o[3]-8} textAnchor="middle" fill={s.color} fontSize="3">{o[0]}</text></g>)}
+ </svg>
+ </div>
+ <div className="flex flex-col justify-center gap-4">
+ <h2 className="text-2xl font-medium">Major organs</h2>
+ {s.organs.map((o,i)=><button key={o[0]} onMouseEnter={()=>setHover(i)} onMouseLeave={()=>setHover(null)} onFocus={()=>setHover(i)} onBlur={()=>setHover(null)} onClick={()=>setSelected(i)} className="rounded-xl border p-5 text-left transition-colors" style={{borderColor:focus===i?s.color:"rgba(255,255,255,.14)",background:focus===i?s.color+"18":undefined}}><span className="font-medium" style={{color:s.color}}>{o[0]}</span><p className="mt-2 text-sm text-muted-foreground">{o[1]}</p></button>)}
+ </div></section>
+ <div className="mt-20 grid gap-12 md:grid-cols-2"><section><h2 className="text-2xl font-semibold">Nutrition key points</h2><ul className="mt-5 space-y-4 text-muted-foreground">{s.nutrition.map(x=><li key={x} className="border-l-2 pl-4" style={{borderColor:s.color}}>{x}</li>)}</ul></section><section><h2 className="text-2xl font-semibold">Common diseases</h2><ul className="mt-5 space-y-4">{s.diseases.map(x=><li key={x} className="border-b border-white/10 pb-3">{x}</li>)}</ul></section></div>
+ <section className="mt-20"><h2 className="text-2xl font-semibold">Plant species — research overview</h2><p className="mt-3 max-w-3xl text-sm text-muted-foreground">Illustrative ordering only, not a validated therapeutic-capacity ranking. Effects depend on condition, preparation, dose, evidence quality, and safety. Plants do not replace established treatment.</p><div className="mt-6 max-h-80 space-y-3 overflow-y-auto pr-3">{s.plants.map((p,i)=><article key={p[0]} className="rounded-lg border border-white/15 p-5"><p className="text-xs" style={{color:s.color}}>Research entry {i+1}</p><h3 className="mt-2 italic font-medium">{p[0]}</h3><p className="mt-2 text-sm text-muted-foreground">{p[1]}</p></article>)}</div></section>
+ <section className="mt-20 mb-16"><h2 className="text-2xl font-semibold">Therapeutic recipes</h2><div className="mt-6 max-h-56 overflow-y-auto rounded-xl border border-white/15 p-10 text-center"><p className="text-xl">Coming soon</p><p className="mt-3 text-sm text-muted-foreground">Condition-aware recipes and nutrition context are in development.</p></div></section>
+ <p className="border-t border-white/10 pt-6 text-xs text-muted-foreground">Educational information only. Not individualized medical advice; discuss herbs, supplements, and medication interactions with a qualified clinician.</p>
+ </main>;
+}
