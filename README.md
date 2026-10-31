@@ -202,3 +202,5 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+<!-- Cloudflare Git deployment trigger: 2026-10-30 -->
