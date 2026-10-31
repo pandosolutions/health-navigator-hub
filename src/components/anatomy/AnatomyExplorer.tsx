@@ -479,6 +479,7 @@ export function AnatomyExplorer() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [active, setActive] = useState<SystemId | null>(null);
+  const [clickedSystem, setClickedSystem] = useState<SystemId | null>(null);
   const activeRef = useRef<SystemId | null>(null);
   activeRef.current = active;
   const tourTimers = useRef<number[]>([]);
@@ -496,7 +497,9 @@ export function AnatomyExplorer() {
     } catch {
       /* storage unavailable: the tour may simply run again next visit */
     }
-    setActive((cur) => (cur === id ? null : id));
+    const next = activeRef.current === id ? null : id;
+    setClickedSystem(next);
+    setActive(next);
   };
 
   // Render loop.
@@ -952,7 +955,16 @@ export function AnatomyExplorer() {
 
   return (
     <div ref={wrapRef} className="mx-auto w-full max-w-[560px]">
-      <canvas
+      <div className="relative">
+        <div
+          aria-live="polite"
+          className={`pointer-events-none absolute left-1/2 top-[9%] z-10 w-[34%] -translate-x-1/2 text-center text-[10px] font-medium uppercase leading-relaxed tracking-[0.12em] text-white/65 transition-opacity duration-500 sm:text-xs sm:tracking-[0.18em] ${clickedSystem && active === clickedSystem ? "opacity-100" : "opacity-0"}`}
+        >
+          {clickedSystem && active === clickedSystem
+            ? SYSTEMS.find((s) => s.id === clickedSystem)?.label.replace("­", "")
+            : null}
+        </div>
+        <canvas
         ref={canvasRef}
         className="block aspect-[1/1.12] w-full"
         role="img"
@@ -961,7 +973,8 @@ export function AnatomyExplorer() {
             ? `Illustration of a man and a woman with the ${current.label.replace("­", "")} system highlighted`
             : "Illustration of a man and a woman drawn as networks of glowing points"
         }
-      />
+        />
+      </div>
       <div className="relative mt-6">
         <div
           className="absolute left-[8.333%] right-[8.333%] top-[7px] h-px bg-white/25"
@@ -1003,14 +1016,7 @@ export function AnatomyExplorer() {
             );
           })}
         </ol>
-        <p
-          aria-live="polite"
-          className="mt-5 min-h-[1.25rem] text-center text-xs text-muted-foreground"
-        >
-          {current
-            ? `${current.label.replace("­", "")} — ${current.blurb}`
-            : "Select a system to explore"}
-        </p>
+
       </div>
     </div>
   );
