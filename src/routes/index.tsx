@@ -68,22 +68,7 @@ function HeroSection() {
         <div className="order-2 md:order-1">
           <div className="relative">
             <AnatomyExplorer />
-            <div className="relative z-10 mt-5 grid grid-cols-3 gap-2" aria-label="Explore body systems">
-              {[
-                ["neuro", "Nervous", "#96dcff"],
-                ["cardio", "Cardiovascular", "#ff4d5e"],
-                ["resp", "Respiratory", "#8fd3ff"],
-                ["digest", "Digestive", "#ffb35c"],
-                ["musc", "Musculoskeletal", "#ff7a90"],
-                ["endo", "Endocrine", "#c59bff"],
-              ].map(([id, label, color]) => (
-                <Link key={id} to="/systems/$system" params={{ system: id }}
-                  className="rounded-md border px-2 py-3 text-center text-[11px] font-medium transition hover:bg-white/10 focus-visible:outline focus-visible:outline-2"
-                  style={{ borderColor: color, color }} title={`Explore ${label} system`}>
-                  {label} ↗
-                </Link>
-              ))}
-            </div>
+
           </div>
         </div>
         <div className="order-1 md:order-2">
