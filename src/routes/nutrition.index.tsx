@@ -20,9 +20,9 @@ export const Route = createFileRoute("/nutrition/")({
 
 const SECTIONS = [
   {
-    to: "/nutrition/ingredient-index",
-    label: "Ingredient Index",
-    tag: "Nutrition facts for your favorite ingredients",
+    to: "/nutrition/general-knowledge",
+    label: "General Knowledge",
+    tag: "The fundamentals of nutrition",
   },
   {
     to: "/nutrition/recipes",
@@ -30,9 +30,9 @@ const SECTIONS = [
     tag: "Healthy & therapeutic recipes",
   },
   {
-    to: "/nutrition/general-knowledge",
-    label: "General Knowledge",
-    tag: "The fundamentals of nutrition",
+    to: "/nutrition/ingredient-index",
+    label: "Ingredient Index",
+    tag: "Nutrition facts for your favorite ingredients",
   },
 ] as const;
 
